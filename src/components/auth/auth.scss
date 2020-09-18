@@ -1,0 +1,37 @@
+.blok {
+    display: inline;
+}
+
+.btn {
+    grid-area: btn;
+}
+
+.name {
+    grid-area: name;
+}
+
+.email {
+    grid-area: email;
+}
+
+.password {
+    grid-area: password;
+}
+
+.phone_number {
+    grid-area: phoneNumber;
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 5% repeat(5, 1fr) auto;
+    grid-template-areas: 
+    ". . ."
+    ". name ."
+    ". email ."
+    ". password ."
+    ". phoneNumber ."
+    ". btn ."
+    ". . .";
+}
