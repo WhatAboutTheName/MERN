@@ -56,6 +56,7 @@ export const Header = () => {
             }
         </Nav>
       </Navbar>
+      <br />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/Order" component={Order} />

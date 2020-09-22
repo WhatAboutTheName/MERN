@@ -191,18 +191,22 @@ userSchema.methods.orderStatisticsAll = function(value: boolean) {
 }
 
 userSchema.methods.updateOrderProduct = function(prodId: string, quantity: number, orderId: string, admin: boolean) {
+  let flag = false;
   this.order.filter((item: IOrderItem) => {
     if (admin) {
-      item.orderId === orderId.toString();
+      item.orderId.toString() === orderId.toString() ? flag = !flag : flag;
     } else {
-      item._id === orderId.toString();
+      item._id.toString() === orderId.toString()? flag = !flag : flag;
     }
-    return item.prodData.filter(prod => {
-      if (prod.prodId.toString() === prodId.toString()) {
-        Number(quantity) === 0 ? item.prodData.splice(item.prodData.indexOf(prod), 1) : prod.prodQuantity = quantity;
-      }
-      return item;
-    });
+    if (flag) {
+      flag = !flag;
+      return item.prodData.filter(prod => {
+        if (prod.prodId.toString() === prodId.toString()) {
+          Number(quantity) === 0 ? item.prodData.splice(item.prodData.indexOf(prod), 1) : prod.prodQuantity = quantity;
+        }
+        return item;
+      });
+    }
   });
   return this.save();
 }
