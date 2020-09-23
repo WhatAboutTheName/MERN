@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, createRef } from 'react';
 import { Http } from '../../hooks/http.hook';
 import { AuthContext } from '../../context/auth-context';
-import { Button } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import './add-product.scss';
 
 export const AddProduct = () => {
+    const fileInputRef = createRef();
     const auth = useContext(AuthContext);
     const {request, errorHandler, error, cleanError} = Http();
     const [imagePreview, setImagePreview] = useState(undefined);
@@ -45,35 +46,52 @@ export const AddProduct = () => {
         } catch(e) {}
     }
 
+    const filePickerClick = () => {
+        fileInputRef.current.click();
+    }
+
     useEffect(() => {
         errorHandler();
     }, [error, cleanError]);
 
     return (
-        <div className="contauner">
-            <div className="form">
-                <label>
-                    Title:
-                    <input name="title" type="text" onChange={setValue} />
-                </label>
-                <label>
-                    Price:
-                    <input name="price" type="text" onChange={setValue} />
-                </label>
-                <div className="image">
-                    <input name="image" type="file" onChange={filePicker} />
-                </div>
-                { imagePreview ? 
-                    <div className="image-preview">
-                        <img src={imagePreview} alt={product.title} />
+        <Container>
+            <Row className="justify-content-md-center">
+                <Col
+                    xs={{ span: 3, offset: 1 }}
+                    sm={{ span: 3, offset: 1 }}
+                    md={{ span: 3, offset: 1 }}
+                    lg={{ span: 3, offset: 1 }}
+                    xl={{ span: 3, offset: 1 }}
+                >
+                    <div>
+                        <label>
+                            Title:
+                            <input name="title" type="text" onChange={setValue} />
+                        </label>
                     </div>
-                    :
-                    <div className="image-preview">
-                        <h4>No image!</h4>
+                    <div>
+                        <label>
+                            Price:
+                            <input name="price" type="text" onChange={setValue} />
+                        </label>
                     </div>
-                }
-                <Button variant="primary" onClick={uploadImage} className="btn">accept</Button>
-            </div>
-        </div>
+                    <div className="image">
+                        <Button variant="primary" onClick={filePickerClick}>Change Image</Button>
+                        <input name="image" type="file" ref={fileInputRef} onChange={filePicker} />
+                    </div>
+                    { imagePreview ? 
+                        <div className="image-preview">
+                            <img src={imagePreview} alt={product.title} />
+                        </div>
+                        :
+                        <div className="image-preview">
+                            <h4>No image!</h4>
+                        </div>
+                    }
+                    <Button variant="primary" onClick={uploadImage} className="btn">accept</Button>
+                </Col>
+            </Row>
+        </Container>
     );
 }

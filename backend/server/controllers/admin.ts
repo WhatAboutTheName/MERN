@@ -18,7 +18,8 @@ export class AdminControllers {
         image: image + "/images/" + req['file'].filename
       });
       const prod = await product.save();
-      WSocketIO.getIO().emit('newProduct', {product: prod});
+      const prods = await ProductModel.find();
+      WSocketIO.getIO().emit('newProduct', {product: prods});
       res.status(201).json({message: "Post added successfully"});
     } catch (err) {
       if (!err.statusCode) {

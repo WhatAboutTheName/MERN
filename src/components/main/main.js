@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Product } from './template/product';
 import { Http } from '../../hooks/http.hook';
 import { Container, Row, Col } from 'react-bootstrap';
+import io from 'socket.io-client';
 import './main.scss';
 
 export const Main = () => {
@@ -17,6 +18,19 @@ export const Main = () => {
       );
     } catch(e) {}
   }, [request]);
+
+  useEffect(() => {
+    const socket = io('http://localhost:8000');
+    socket.on('newProduct', soketData => {
+      console.log(products)
+      setProducts(
+        ...products,
+        soketData.product
+      );
+      console.log(soketData.product)
+    })
+    return () => socket.disconnect();
+  }, []);
 
   useEffect(() => {
     errorHandler();

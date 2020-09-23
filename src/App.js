@@ -6,9 +6,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 
-
 function App() {
   const {login, logout, admin, token, userId, isLogin} = Auth();
+
   return (
     <AuthContext.Provider value={{
       admin, token, userId, login, logout, isLogin

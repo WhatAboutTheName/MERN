@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
 import { Main } from '../main/main';
 import Order from '../order/order';
@@ -10,7 +10,7 @@ import NotFound from '../not-found/not-found';
 import { AuthContext } from '../../context/auth-context';
 import { Http } from '../../hooks/http.hook';
 import { useHistory } from 'react-router-dom';
-import { Navbar, Nav, Button, Form } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import './header.scss';
 
 export const Header = () => {
@@ -22,13 +22,35 @@ export const Header = () => {
     try {
       await request('/user/logout', 'put', {userId: auth.userId}, {withCredentials: true});
       auth.logout();
-      history.push('/user/log-in');
     } catch(e) {}
   }
-  
+
+  const getData = useCallback(async () => {
+    try {
+      const res = await request('auth-check', 'get', null, {withCredentials: true});
+      if (res.data.isLogin) {
+        const authData = {email: res.data.email, password: res.data.password};
+        const autoAuth = await request('/user/log-in', 'post', authData, { withCredentials: true });
+        auth.login(
+          autoAuth.data.admin,
+          autoAuth.data.token,
+          autoAuth.data.expiresIn,
+          autoAuth.data.userId,
+          autoAuth.data.isLogin
+        );
+        history.push('/');
+      }
+    } catch(e) {}
+  }, [request]);
+
   useEffect(() => {
     errorHandler();
   }, [error, cleanError]);
+
+  useEffect(() => {
+    getData();
+  }, [getData]);
+
   return (
     <>
       <Navbar bg="primary" variant="dark">

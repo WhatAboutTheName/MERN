@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useCallback, useEffect, Component } from 'react';
 import { Http } from '../../hooks/http.hook';
 import { AuthContext } from '../../context/auth-context';
 import { Button, Container, Row, Col, Tab, Nav } from 'react-bootstrap';
@@ -7,10 +7,9 @@ import io from 'socket.io-client';
 import './order.scss';
 
 const Order = () => {
-    const {loading, request, errorHandler, error, cleanError} = Http();
+    const {request, errorHandler, error, cleanError} = Http();
     const auth = useContext(AuthContext);
     const [order, setOrder] = useState([]);
-    const socket = io('http://localhost:8000');
 
     const getData = useCallback( async () => {
         try {
@@ -25,12 +24,12 @@ const Order = () => {
     }, [error, cleanError]);
 
     useEffect(() => {
-        loading ?
+        const socket = io('http://localhost:8000');
         socket.on('Order', soketData => {
             setOrder(soketData.data);
-        }) :
-        socket.off('Order');
-    }, [loading]);
+        })
+        return () => socket.disconnect();
+    }, []);
 
     useEffect(() => {
         getData();

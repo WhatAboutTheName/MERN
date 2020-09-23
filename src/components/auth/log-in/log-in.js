@@ -24,7 +24,7 @@ export const LogIn = () => {
     const identification = async () => {
         try {
             const res = await request('/user/log-in', 'post', authData, { withCredentials: true });
-            auth.login(res.data.admin, res.data.token, res.data.userId, res.data.isLogin);
+            auth.login(res.data.admin, res.data.token, res.data.expiresIn, res.data.userId, res.data.isLogin);
             history.push('/');
         } catch(e) {}
     }

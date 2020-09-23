@@ -3,9 +3,11 @@ import { Http } from '../../hooks/http.hook';
 import { Product } from './product/product';
 import { AuthContext } from '../../context/auth-context';
 import { Button, Container, Row, Col } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import './cart.scss';
 
 export const Cart = () => {
+    const history = useHistory();
     const [allSum, setAllSum] = useState(0);
     const auth = useContext(AuthContext);
     const {request, errorHandler, error, cleanError} = Http();
@@ -29,7 +31,6 @@ export const Cart = () => {
             });
             setProdData(data);
             setAllSum(sum);
-            getData();
         } catch(e) {}
     }, [request]);
 
@@ -39,6 +40,7 @@ export const Cart = () => {
             await request('/all/order-create', 'patch', data, {
                 Authorization: `Bearer ${auth.token}`
             });
+            history.push('/Order');
         } catch(e) {}
     }
 
