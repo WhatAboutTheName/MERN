@@ -1,12 +1,13 @@
-import React, { useContext, useState, useEffect, createRef } from 'react';
-import { AuthContext } from '../../../context/auth-context';
+import React, { useState, useEffect, createRef } from 'react';
 import { Button, Modal, Image } from 'react-bootstrap';
 import { Http } from '../../../hooks/http.hook';
+import { useSelector } from 'react-redux';
 import  './product.scss';
 
 export const Product = (props) => {
+
     const fileInputRef = createRef();
-    const auth = useContext(AuthContext);
+    const auth = useSelector(state => state.auth);
     const {request, errorHandler, error, cleanError} = Http();
     const [show, setShow] = useState(false);
     const [imagePreview, setImagePreview] = useState(undefined);
@@ -88,7 +89,7 @@ export const Product = (props) => {
                         auth.isLogin && <Button variant="primary" onClick={() => addToCart(props.id)}>In cart</Button>
                     }
                     {
-                        auth.isLogin && auth.admin && <Button variant="primary" onClick={edit}>Edit</Button>
+                        auth.isLogin && auth.isAdmin && <Button variant="primary" onClick={edit}>Edit</Button>
                     }
                     <Modal show={show} onHide={close}>
                         <Modal.Header>

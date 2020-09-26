@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext, createRef } from 'react';
 import { Http } from '../../hooks/http.hook';
-import { AuthContext } from '../../context/auth-context';
 import { Button, Container, Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import './add-product.scss';
 
 export const AddProduct = () => {
     const fileInputRef = createRef();
-    const auth = useContext(AuthContext);
+    const auth = useSelector(state => state.auth);
     const {request, errorHandler, error, cleanError} = Http();
     const [imagePreview, setImagePreview] = useState(undefined);
     const [product, setProduct] = useState({

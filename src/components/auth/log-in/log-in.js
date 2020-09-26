@@ -1,13 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Http } from '../../../hooks/http.hook';
 import { useHistory } from 'react-router-dom';
-import { AuthContext } from '../../../context/auth-context';
 import { Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../../store/actions/auth-actions';
 import '../auth.scss';
 
 export const LogIn = () => {
+
+    const dispatch = useDispatch();
     const history = useHistory();
-    const auth = useContext(AuthContext);
     const {request, errorHandler, error, cleanError} = Http();
     const [authData, setAuthData] = useState({
         email: '',
@@ -24,7 +26,7 @@ export const LogIn = () => {
     const identification = async () => {
         try {
             const res = await request('/user/log-in', 'post', authData, { withCredentials: true });
-            auth.login(res.data.admin, res.data.token, res.data.expiresIn, res.data.userId, res.data.isLogin);
+            await dispatch(authActions(res.data.admin, res.data.token, res.data.expiresIn, res.data.userId, res.data.isLogin));
             history.push('/');
         } catch(e) {}
     }

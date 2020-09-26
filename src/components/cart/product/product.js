@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Image, Modal } from 'react-bootstrap';
 import { Http } from '../../../hooks/http.hook';
-import { AuthContext } from '../../../context/auth-context';
+import { useSelector } from 'react-redux';
 
 export const Product = (props) => {
-    const auth = useContext(AuthContext);
+
+    const auth = useSelector(state => state.auth);
     const [show, setShow] = useState(false);
     const {request, errorHandler, error, cleanError} = Http();
     const [product, setProduct] = useState({

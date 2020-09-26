@@ -1,14 +1,14 @@
-import React, { useState, useContext, useCallback, useEffect, Component } from 'react';
-import { Http } from '../../hooks/http.hook';
-import { AuthContext } from '../../context/auth-context';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Container, Row, Col, Tab, Nav } from 'react-bootstrap';
+import { Http } from '../../hooks/http.hook';
 import { Product } from './template/product';
 import io from 'socket.io-client';
 import './order.scss';
 
 const Order = () => {
     const {request, errorHandler, error, cleanError} = Http();
-    const auth = useContext(AuthContext);
+    const auth = useSelector(state => state.auth);
     const [order, setOrder] = useState([]);
 
     const getData = useCallback( async () => {
@@ -110,7 +110,7 @@ const Order = () => {
                             >
                                 cancel
                             </Button>
-                            { auth.admin && 
+                            { auth.isAdmin && 
                                 <Button
                                     variant="success"
                                     onClick={() => executeOrder(item.userId, item.orderId)}
@@ -118,7 +118,7 @@ const Order = () => {
                                     execute
                                 </Button>
                             }
-                            { auth.admin &&
+                            { auth.isAdmin &&
                                 <Button
                                     variant="secondary"
                                     onClick={() => inProcessing(item.userId, item.orderId)}

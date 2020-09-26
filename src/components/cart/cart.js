@@ -1,15 +1,16 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Http } from '../../hooks/http.hook';
 import { Product } from './product/product';
-import { AuthContext } from '../../context/auth-context';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 import './cart.scss';
 
 export const Cart = () => {
     const history = useHistory();
     const [allSum, setAllSum] = useState(0);
-    const auth = useContext(AuthContext);
+    const auth = useSelector(state => state.auth);
     const {request, errorHandler, error, cleanError} = Http();
     const [products, setProducts] = useState([]);
     const [prodData, setProdData] = useState([]);

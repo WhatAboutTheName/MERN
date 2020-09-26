@@ -22,12 +22,10 @@ export const Main = () => {
   useEffect(() => {
     const socket = io('http://localhost:8000');
     socket.on('newProduct', soketData => {
-      console.log(products)
       setProducts(
         ...products,
         soketData.product
       );
-      console.log(soketData.product)
     })
     return () => socket.disconnect();
   }, []);
