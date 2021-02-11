@@ -11,7 +11,7 @@ import MongoDBSession from 'connect-mongodb-session';
 
 const MongoDBStore = MongoDBSession(session);
 
-const MONGODB_URI = 'mongodb+srv://WATN:123qwe123@cluster0-igf25.mongodb.net/shop';
+const MONGODB_URI = 'mongodb+srv://WATN:123qwe123@cluster0.tyshx.mongodb.net/shop';
 
 export const app = express();
 const store = new MongoDBStore({

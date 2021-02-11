@@ -45,7 +45,7 @@ export class AuthControllers {
             const user = await UserModel.findOne({email: req.body.email});
             user?.isLoginChange(true);
             if (!user) {
-                return res.status(401).json({message: 'Auth failed!'});
+                return res.status(401).json({message: 'Auth failed1!'});
             }
             person = user;
             const compare = await bcrypt.compare(req.body.password, user.password);
